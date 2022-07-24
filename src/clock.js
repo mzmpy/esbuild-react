@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link, Outlet } from 'react-router-dom'
 
 export default class Clock extends React.Component {
   constructor(props) {
@@ -41,7 +42,11 @@ export default class Clock extends React.Component {
       return <>
         <h1>Hello, { this.props.name }!</h1>
         <h2>It is { this.state.date.toLocaleTimeString() } now.</h2>
-        <button onClick={ this.toggle }>{ this.state.status ? 'stop' : 'react' }</button>
+        <button type="button" onClick={ this.toggle }>{ this.state.status ? 'stop' : 'react' }</button>
+        <div>
+          <Link to="/mathematics">Mathematics</Link> | <Link to="/physics">Physics</Link>
+        </div>
+        <Outlet />
       </>
   }
 }
