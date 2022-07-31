@@ -1,6 +1,8 @@
 import React from 'react'
 import { Link, Outlet } from 'react-router-dom'
 
+import styles from './clock.module.css'
+
 export default class Clock extends React.Component {
   constructor(props) {
     super(props)
@@ -40,7 +42,7 @@ export default class Clock extends React.Component {
 
   render() {
       return <>
-        <h1>Hello, { this.props.name }!</h1>
+        <h1 className={styles.title}>Hello, { this.props.name }!</h1>
         <h2>It is { this.state.date.toLocaleTimeString() } now.</h2>
         <button type="button" onClick={ this.toggle }>{ this.state.status ? 'stop' : 'react' }</button>
         <div>

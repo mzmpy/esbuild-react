@@ -4,8 +4,12 @@ const path = require('path')
 fs.readFile(path.resolve(__dirname, '../static/index.html'), { encoding: 'utf-8' }, (err, data) => {
   if (err) throw err
   
-  const replace = '<!-- inject jscode here! --><script type="text/javascript" src="./index.js"></script>'
-  data = data.replace('<!-- inject jscode here! -->', replace)
+  const jsReplace = '<!-- inject jscode here! --><script type="text/javascript" src="./index.js"></script>'
+  const styleReplace = '<!-- inject stylesheet here! --><link rel="stylesheet" href="./index.css"></link>'
+
+  data = data
+    .replace('<!-- inject jscode here! -->', jsReplace)
+    .replace('<!-- inject stylesheet here! -->', styleReplace)
 
   fs.writeFile(path.resolve(__dirname, '../dist/index.html'), data, err => {
     if (err) throw err

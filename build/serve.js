@@ -1,5 +1,6 @@
 const esbuild = require('esbuild')
 const http = require('http')
+const esbuildCssModulePlugin = require('../plugins/esbuild-plugin-css-modules')
 
 esbuild.serve({
   port: 4375,
@@ -15,6 +16,7 @@ esbuild.serve({
   loader: {
     '.js': 'jsx'
   },
+  plugins: [esbuildCssModulePlugin()],
   outfile: './dist/index.js'
 }).then((service) => {
   // console.log(`Esbuild serve at http://${service.host}:${service.port}.`)
