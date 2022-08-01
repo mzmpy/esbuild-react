@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "node ./plugins/esbuild-plugin-parcel-css.js",
     "build": "node ./build/preBuild.js && node ./build/build.js",
     "serve": "node ./build/preBuild.js && node ./build/serve.js"
   },
@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@parcel/css": "^1.12.2",
     "esbuild": "^0.14.49",
     "postcss": "^8.4.14"
   },
