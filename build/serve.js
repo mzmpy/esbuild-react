@@ -1,6 +1,7 @@
 const esbuild = require('esbuild')
 const http = require('http')
 const esbuildCssModulePlugin = require('../plugins/esbuild-plugin-css-modules')
+const esbuildPluginParcelCss = require('../plugins/esbuild-plugin-parcel-css')
 
 esbuild.serve({
   port: 4375,
@@ -16,7 +17,12 @@ esbuild.serve({
   loader: {
     '.js': 'jsx'
   },
-  plugins: [esbuildCssModulePlugin()],
+  // plugins: [esbuildCssModulePlugin()],
+  plugins: [esbuildPluginParcelCss({
+    cssModules: {
+      pattern: '[name]-[hash]-[local]'
+    }
+  })],
   outfile: './dist/index.js'
 }).then((service) => {
   // console.log(`Esbuild serve at http://${service.host}:${service.port}.`)
