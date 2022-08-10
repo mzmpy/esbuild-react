@@ -18,6 +18,7 @@ esbuild.serve({
     '.js': 'jsx'
   },
   // plugins: [esbuildCssModulePlugin()],
+  // plugins: [esbuildPluginParcelCss()],
   plugins: [esbuildPluginParcelCss({
     cssModules: {
       pattern: '[name]-[hash]-[local]'

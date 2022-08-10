@@ -6,9 +6,10 @@ module.exports = (options = {}) => {
 	return {
 		name: 'parcel-css-plugin',
 		setup(build) {
-			const transform = async (filePath) => {
+			const transform = async (filePath, suffix='.css') => {
 				const data = await fs.promises.readFile(filePath, { encoding: 'utf-8' })
-        const namespace = path.relative(process.cwd(), filePath).slice(0, -11).replace(path.sep, '__').replace(/\./g, '_')
+        const regex = new RegExp(`(.*)${suffix.replace(/\./g, '\\.')}`)
+        const namespace = path.relative(process.cwd(), filePath).match(regex)[1].replace(path.sep, '__').replace(/\./g, '_')
 				const classMap = {}
 
 				const resCode = parcelCss.transform({
@@ -35,10 +36,18 @@ module.exports = (options = {}) => {
 
 			const cssMap = new Map()
 
-      build.onLoad({ filter: /\.module\.css/ }, async (args) => {
-        const { namespace, styles, css } = await transform(args.path)
+      build.onLoad({ filter: /(\.module)?\.css/ }, async (args) => {
+        if(!options.cssModules) {
+          const { css } = await transform(args.path)
+          return {
+            contents: css,
+            loader: 'css'
+          }
+        }
 
-        const importPath = `css-module://${namespace}`
+        const { namespace, styles, css } = await transform(args.path, '.module.css')
+
+        const importPath = `parcel-css-plugin://${namespace}`
         cssMap.set(importPath, css)
 
         return {
@@ -46,14 +55,14 @@ module.exports = (options = {}) => {
         }
       })
 
-      build.onResolve({ filter: /css-module:\/\// }, (args) => {
+      build.onResolve({ filter: /parcel-css-plugin:\/\// }, (args) => {
         return {
           path: args.path,
-          namespace: 'css-module'
+          namespace: 'PARCEL_CSS_PLUGIN'
         }
       })
 
-      build.onLoad({ filter: /.*/, namespace: 'css-module' }, (args) => {
+      build.onLoad({ filter: /.*/, namespace: 'PARCEL_CSS_PLUGIN' }, (args) => {
         return {
           contents: cssMap.get(args.path),
           loader: 'css'
