@@ -17,4 +17,4 @@ esbuild.build({
     }
   })],
   outfile: './dist/index.js'
-})
+}).catch(() => process.exit(1))

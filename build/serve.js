@@ -56,4 +56,4 @@ esbuild.serve({
   }).listen(3000)
 
   console.log(`Proxy serve at http://127.0.0.1:3000.`)
-})
+}).catch(() => process.exit(1))

@@ -43,7 +43,7 @@ export default class Clock extends React.Component {
 
   render() {
       return <>
-        <h1 className={styles.title}>Hello, { this.props.name }!</h1>
+        <h1 className={styles.title.name}>Hello, { this.props.name }!</h1>
         <h2>It is { this.state.date.toLocaleTimeString() } now.</h2>
         <button type="button" onClick={ this.toggle }>{ this.state.status ? 'stop' : 'react' }</button>
         <div>

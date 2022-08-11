@@ -10,12 +10,11 @@ module.exports = (options = {}) => {
 				const data = await fs.promises.readFile(filePath, { encoding: 'utf-8' })
         const regex = new RegExp(`(.*)${suffix.replace(/\./g, '\\.')}`)
         const namespace = path.relative(process.cwd(), filePath).match(regex)[1].replace(path.sep, '__').replace(/\./g, '_')
-				const classMap = {}
 
 				const resCode = parcelCss.transform({
 					filename: namespace,
 					code: Buffer.from(data),
-					minify: options.minify || true,
+					minify: options.minify || false,
 					sourceMap: options.sourceMap || false,
 					inputSourceMap: options.inputSourceMap,
 					targets: options.targets,
@@ -23,13 +22,9 @@ module.exports = (options = {}) => {
 					cssModules: options.cssModules || false
 				})
 
-				for(const key in resCode.exports) {
-					classMap[key] = resCode.exports[key].name
-				}
-
 				return {
           namespace: namespace,
-          styles: classMap,
+          styles: resCode.exports,
           css: resCode.code.toString()
         }
 			}
